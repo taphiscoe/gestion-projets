@@ -26,7 +26,8 @@
                 <td th:text="${projet.code}"></td>
                 <td th:text="${projet.nom}"></td>
                 <td th:text="${projet.type}"></td>
-                <td th:text="${projet.region}"></td>
+               <td th:text="${projet.localites != null && !projet.localites.empty ? 
+    projet.localites[0].region : ''}"></td>
                 <td th:text="${projet.statut}"></td>
                 <td th:text="${projet.tauxAvancement}"></td>
             </tr>

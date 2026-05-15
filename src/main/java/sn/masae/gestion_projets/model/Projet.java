@@ -1,11 +1,14 @@
 package sn.masae.gestion_projets.model;
 
+
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDate;
+import java.util.List;
 
-@Data// Lombok génère automatiquement les getters, setters, toString, equals et hashCode 
-@Entity // Indique que cette classe est une entité JPA 
+@Data // Lombok génère automatiquement les getters, setters, toString, equals et
+      // hashCode
+@Entity // Indique que cette classe est une entité JPA
 @Table(name = "projets") // Spécifie le nom de la table dans la base de données
 public class Projet { // Attributs de l'entité Projet
 
@@ -25,10 +28,9 @@ public class Projet { // Attributs de l'entité Projet
     @Column(nullable = false)
     private String type; // Agriculture ou Elevage
 
-    private String region;
-    private String departement;
-    private String commune;
-
+    @OneToMany(mappedBy = "projet", cascade = CascadeType.ALL)
+    
+    private List<ProjetLocalite> localites;
     private LocalDate dateDebutPrevue;
     private LocalDate dateFinPrevue;
     private LocalDate dateFinReelle;
