@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Projets</title>
+</head>
+<body>
+
+    <h1>Liste des Projets</h1>
+
+    <a href="/projets/nouveau">Ajouter un projet</a>
+
+    <table border="1"> 
+        <thead> 
+            <tr>
+                <th>Code</th>
+                <th>Nom</th>
+                <th>Type</th>
+                <th>Région</th>
+                <th>Statut</th>
+                <th>Taux d'avancement</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="projet : ${projets}"> 
+                <td th:text="${projet.code}"></td>
+                <td th:text="${projet.nom}"></td>
+                <td th:text="${projet.type}"></td>
+                <td th:text="${projet.region}"></td>
+                <td th:text="${projet.statut}"></td>
+                <td th:text="${projet.tauxAvancement}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
