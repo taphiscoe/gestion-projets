@@ -1,5 +1,8 @@
 package sn.masae.gestion_projets.controller;
 import sn.masae.gestion_projets.model.Projet; // Import de la classe Projet pour représenter les projets dans le code
+import sn.masae.gestion_projets.model.ProjetLocalite;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import java.time.LocalDate; 
 import org.springframework.beans.factory.annotation.Autowired; // Import de l'annotation Autowired pour l'injection de dépendances
 import org.springframework.stereotype.Controller; // Import de l'annotation Controller pour indiquer que cette classe est un contrôleur Spring MVC 
@@ -7,6 +10,8 @@ import org.springframework.ui.Model; // Import de l'interface Model pour passer 
 import org.springframework.web.bind.annotation.GetMapping; // Import de l'annotation GetMapping pour gérer les requêtes HTTP GET
 import org.springframework.web.bind.annotation.PostMapping;
 
+
+import sn.masae.gestion_projets.repository.ProjetLocaliteRepository;
 import sn.masae.gestion_projets.repository.ProjetRepository; // Import de la classe ProjetRepository pour accéder aux données des projets dans la base de données
 
 @Controller
@@ -14,7 +19,8 @@ public class ProjetController { // Annotation pour indiquer que cette classe est
 
     @Autowired
     private ProjetRepository projetRepository; // Injection de dépendance du ProjetRepository pour accéder aux données des projets
-
+    @Autowired
+private ProjetLocaliteRepository projetLocaliteRepository;
     @GetMapping("/projets") // Annotation pour gérer les requêtes HTTP GET à l'URL "/projets"
     public String listeProjets(Model model) { // Méthode pour afficher la liste des projets, le paramètre Model est utilisé pour passer des données à la vue
         model.addAttribute("projets", projetRepository.findAll()); // Récupère tous les projets de la base de données et les ajoute au modèle avec l'attribut "projets"
@@ -27,9 +33,23 @@ public class ProjetController { // Annotation pour indiquer que cette classe est
     }
 
     @PostMapping("/projets") // Annotation pour gérer les requêtes HTTP POST à l'URL "/projets"
-    public String sauvegarderProjet(Projet projet) { // Méthode pour sauvegarder un projet, le paramètre Projet est automatiquement rempli avec les données du formulaire
-       projet.setDateCreation(LocalDate.now()); // Définit la date de création du projet à la date actuelle
-        projetRepository.save(projet); // Sauvegarde le projet dans la base de données
-        return "redirect:/projets"; // Redirige vers la liste des projets après la sauvegarde
-    }
+   
+public String sauvegarderProjet(Projet projet,
+                                 @RequestParam String region,
+                                 @RequestParam String departement,
+                                 @RequestParam(required = false) String commune) {
+    
+    projet.setDateCreation(LocalDate.now());
+    projetRepository.save(projet);
+
+    // Créer et sauvegarder la localité
+    ProjetLocalite localite = new ProjetLocalite();
+    localite.setProjet(projet);
+    localite.setRegion(region);
+    localite.setDepartement(departement);
+    localite.setCommune(commune != null ? commune : "");
+    projetLocaliteRepository.save(localite);
+
+    return "redirect:/projets";
+}
 }
