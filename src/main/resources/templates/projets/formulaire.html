@@ -27,33 +27,39 @@
             <option value="Elevage">Elevage</option>
         </select> <br><br>
 
-        <label for="region">Région :</label>
-        <select id="region" name="region" onchange="chargerDepartements()" required>
-            <option value="">--Sélectionnez une région--</option>
-            <option value="Dakar">Dakar</option>
-            <option value="Thiès">Thiès</option>
-            <option value="Diourbel">Diourbel</option>
-            <option value="Saint-Louis">Saint-Louis</option>
-            <option value="Louga">Louga</option>
-            <option value="Fatick">Fatick</option>
-            <option value="Kaolack">Kaolack</option>
-            <option value="Kaffrine">Kaffrine</option>
-            <option value="Tambacounda">Tambacounda</option>
-            <option value="Kédougou">Kédougou</option>
-            <option value="Kolda">Kolda</option>
-            <option value="Ziguinchor">Ziguinchor</option>
-            <option value="Sédhiou">Sédhiou</option>
-            <option value="Matam">Matam</option>
-        </select><br><br>
+        <label>Localités du projet :</label><br><br>
 
-        <label for="departement">Département :</label>
-        <select id="departement" name="departement" required>
-            <option value="">--Sélectionnez d'abord une région--</option>
-        </select><br><br>
+        <div id="localites-container">
+            <div id="localite-1">
+                <select name="regions" onchange="chargerDepartementsLigne(this, 1)" required>
+                    <option value="">--Sélectionnez une région--</option>
+                    <option value="Dakar">Dakar</option>
+                    <option value="Thiès">Thiès</option>
+                    <option value="Diourbel">Diourbel</option>
+                    <option value="Saint-Louis">Saint-Louis</option>
+                    <option value="Louga">Louga</option>
+                    <option value="Fatick">Fatick</option>
+                    <option value="Kaolack">Kaolack</option>
+                    <option value="Kaffrine">Kaffrine</option>
+                    <option value="Tambacounda">Tambacounda</option>
+                    <option value="Kédougou">Kédougou</option>
+                    <option value="Kolda">Kolda</option>
+                    <option value="Ziguinchor">Ziguinchor</option>
+                    <option value="Sédhiou">Sédhiou</option>
+                    <option value="Matam">Matam</option>
+                </select>
 
-        <label for="commune">Commune :</label>
-        <input type="text" id="commune" name="commune" /><br><br>
+                <select name="departements" id="departement-1" required>
+                    <option value="">--Sélectionnez d'abord une région--</option>
+                </select>
 
+                <input type="text" name="communes" placeholder="Commune (optionnel)" />
+                <br><br>
+            </div>
+        </div>
+
+        <button type="button" onclick="ajouterLocalite()">+ Ajouter une localité</button>
+        <br><br>
         <label for="dateDebutPrevue">Date de début prévue:</label>
         <input type="date" id="dateDebutPrevue" name="dateDebutPrevue" required><br><br>
 
@@ -75,7 +81,7 @@
         <button type="submit">Ajouter</button>
         <a href="/projets">Annuler</a>
     </form>
-<script th:src="@{/js/localites.js}"></script>
+    <script th:src="@{/js/localites.js}"></script>
 </body>
 
 </html>
