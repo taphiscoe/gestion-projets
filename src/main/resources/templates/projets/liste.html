@@ -1,191 +1,67 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
+
 <head>
-    <meta charset="UTF-8">
-    <title>MASAE - Gestion des Projets</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        /* Barre du drapeau sénégalais */
-        .drapeau-bar {
-            height: 5px;
-            background: linear-gradient(to right, 
-                #00853F 33%, 
-                #FDEF42 33%, 
-                #FDEF42 66%, 
-                #E31B23 66%);
-        }
-
-        /* Navbar */
-        .navbar-masae {
-            background-color: #1a5c38;
-            padding: 0.8rem 2rem;
-        }
-
-        .navbar-masae .logo-text {
-            font-size: 1.8rem;
-            font-weight: 900;
-            color: white;
-            letter-spacing: 2px;
-        }
-
-        .navbar-masae .logo-subtitle {
-            font-size: 0.65rem;
-            color: #a8d5b5;
-            display: block;
-            letter-spacing: 0.5px;
-        }
-
-        .navbar-masae .nav-link {
-            color: #d4edda !important;
-            font-size: 0.9rem;
-            padding: 0.5rem 1rem !important;
-        }
-
-        .navbar-masae .nav-link:hover {
-            color: white !important;
-            background-color: rgba(255,255,255,0.1);
-            border-radius: 4px;
-        }
-
-        /* Contenu principal */
-        .main-content {
-            padding: 2rem;
-            min-height: calc(100vh - 140px);
-        }
-
-        /* Titre de page */
-        .page-title {
-            color: #1a5c38;
-            font-weight: 700;
-            border-left: 4px solid #FDEF42;
-            padding-left: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        /* Tableau */
-        .table thead {
-            background-color: #1a5c38;
-            color: white;
-        }
-
-        .table tbody tr:hover {
-            background-color: #f0f7f2;
-        }
-
-        /* Boutons */
-        .btn-masae {
-            background-color: #1a5c38;
-            color: white;
-            border: none;
-        }
-
-        .btn-masae:hover {
-            background-color: #144d2e;
-            color: white;
-        }
-
-        /* Footer */
-        .footer-masae {
-            background-color: #1a5c38;
-            color: #a8d5b5;
-            text-align: center;
-            padding: 1rem;
-            font-size: 0.8rem;
-        }
-    </style>
+    <title>Liste des Projets</title>
 </head>
+
 <body>
+    <div layout:fragment="contenu">
 
-    <!-- Barre drapeau -->
-    <div class="drapeau-bar"></div>
+        <h2 class="page-title">Liste des Projets</h2>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-masae">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/projets">
-                <span class="logo-text">MASAE</span>
-                <span class="logo-subtitle">Ministère de l'Agriculture, de la Souveraineté Alimentaire et de l'Élevage</span>
+        <div class="mb-3">
+            <a href="/projets/nouveau" class="btn btn-masae">
+                + Ajouter un projet
             </a>
-            <div class="collapse navbar-collapse justify-content-end">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/projets">📋 Projets</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">👥 Utilisateurs</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">🗺️ Carte</a>
-                    </li>
-                </ul>
-            </div>
         </div>
-    </nav>
 
-    <!-- Contenu principal -->
-    <div class="main-content">
-        <div class="container-fluid">
-
-            <h2 class="page-title">Liste des Projets</h2>
-
-            <div class="mb-3">
-                <a href="/projets/nouveau" class="btn btn-masae">
-                    + Ajouter un projet
-                </a>
-            </div>
-
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th>Code</th>
-                            <th>Nom</th>
-                            <th>Type</th>
-                            <th>Région(s)</th>
-                            <th>Statut</th>
-                            <th>Taux d'avancement</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="projet : ${projets}">
-                            <td th:text="${projet.code}"></td>
-                            <td th:text="${projet.nom}"></td>
-                            <td th:text="${projet.type}"></td>
-                            <td>
-                                <span th:each="localite, stat : ${projet.localites}">
-                                    <span th:text="${localite.region}"></span>
-                                    <span th:if="${!stat.last}">, </span>
-                                </span>
-                            </td>
-                            <td>
-                                <span th:text="${projet.statut}"
-                                      th:classappend="${projet.statut == 'En cours'} ? 'badge bg-success' : 
-                                                      (${projet.statut == 'Planifié'} ? 'badge bg-primary' : 
-                                                      (${projet.statut == 'Terminé'} ? 'badge bg-secondary' : 'badge bg-warning'))">
-                                </span>
-                            </td>
-                            <td th:text="${projet.tauxAvancement != null ? projet.tauxAvancement + '%' : '0%'}"></td>
-                            <td>
-                                <a th:href="@{/projets/{id}(id=${projet.id})}" class="btn btn-sm btn-outline-success">👁️ Voir</a>
-                                <a th:href="@{/projets/{id}/modifier(id=${projet.id})}" class="btn btn-sm btn-outline-primary">✏️</a>
-                                <a th:href="@{/projets/{id}/supprimer(id=${projet.id})}"
-                                   class="btn btn-sm btn-outline-danger"
-                                   onclick="return confirm('Voulez-vous vraiment supprimer ce projet ?')">🗑️</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Nom</th>
+                        <th>Type</th>
+                        <th>Région(s)</th>
+                        <th>Statut</th>
+                        <th>Taux d'avancement</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="projet : ${projets}">
+                        <td th:text="${projet.code}"></td>
+                        <td th:text="${projet.nom}"></td>
+                        <td th:text="${projet.type}"></td>
+                        <td>
+                            <span th:each="localite, stat : ${projet.localites}">
+                                <span th:text="${localite.region}"></span>
+                                <span th:if="${!stat.last}">, </span>
+                            </span>
+                        </td>
+                        <td>
+                            <span th:text="${projet.statut}"
+                                  th:classappend="${projet.statut == 'En cours'} ? 'badge bg-success' : 
+                                                  (${projet.statut == 'Planifié'} ? 'badge bg-primary' : 
+                                                  (${projet.statut == 'Terminé'} ? 'badge bg-secondary' : 'badge bg-warning'))">
+                            </span>
+                        </td>
+                        <td th:text="${projet.tauxAvancement != null ? projet.tauxAvancement + '%' : '0%'}"></td>
+                        <td>
+                            <a th:href="@{/projets/{id}(id=${projet.id})}" class="btn btn-sm btn-outline-success">👁️ Voir</a>
+                            <a th:href="@{/projets/{id}/modifier(id=${projet.id})}" class="btn btn-sm btn-outline-primary">✏️</a>
+                            <a th:href="@{/projets/{id}/supprimer(id=${projet.id})}"
+                               class="btn btn-sm btn-outline-danger"
+                               onclick="return confirm('Voulez-vous vraiment supprimer ce projet ?')">🗑️</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-    </div>
 
-    <!-- Footer -->
-    <div class="footer-masae">
-        © 2025 MASAE — Ministère de l'Agriculture, de la Souveraineté Alimentaire et de l'Élevage — République du Sénégal
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

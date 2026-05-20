@@ -1,55 +1,85 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
 
 <head>
-    <meta charset="UTF-8">
     <title>Modifier le Projet</title>
 </head>
 
 <body>
+    <div layout:fragment="contenu">
 
-    <h1>Modifier le Projet</h1>
+        <h2 class="page-title">Modifier le Projet</h2>
 
-    <form th:action="@{/projets/{id}/modifier(id=${projet.id})}" method="post">
+        <div class="card card-masae p-4" style="max-width: 800px;">
+            <form th:action="@{/projets/{id}/modifier(id=${projet.id})}" method="post">
 
-        <label for="code">Code :</label>
-        <input type="text" id="code" name="code" th:value="${projet.code}" required><br><br>
+                <div class="mb-3">
+                    <label for="code" class="label-masae">Code :</label>
+                    <input type="text" id="code" name="code" 
+                           class="form-control" th:value="${projet.code}" required>
+                </div>
 
-        <label for="nom">Nom :</label>
-        <input type="text" id="nom" name="nom" th:value="${projet.nom}" required><br><br>
+                <div class="mb-3">
+                    <label for="nom" class="label-masae">Nom :</label>
+                    <input type="text" id="nom" name="nom" 
+                           class="form-control" th:value="${projet.nom}" required>
+                </div>
 
-        <label for="description">Description :</label>
-        <textarea id="description" name="description" th:text="${projet.description}"></textarea><br><br>
+                <div class="mb-3">
+                    <label for="description" class="label-masae">Description :</label>
+                    <textarea id="description" name="description" 
+                              class="form-control" rows="3" 
+                              th:text="${projet.description}"></textarea>
+                </div>
 
-        <label for="type">Type :</label>
-        <select id="type" name="type" required>
-            <option value="Agriculture" th:selected="${projet.type == 'Agriculture'}">Agriculture</option>
-            <option value="Elevage" th:selected="${projet.type == 'Elevage'}">Elevage</option>
-        </select><br><br>
+                <div class="mb-3">
+                    <label for="type" class="label-masae">Type :</label>
+                    <select id="type" name="type" class="form-select" required>
+                        <option value="Agriculture" th:selected="${projet.type == 'Agriculture'}">Agriculture</option>
+                        <option value="Elevage" th:selected="${projet.type == 'Elevage'}">Elevage</option>
+                    </select>
+                </div>
 
-        <label for="dateDebutPrevue">Date de début prévue :</label>
-        <input type="date" id="dateDebutPrevue" name="dateDebutPrevue" th:value="${projet.dateDebutPrevue}"
-            required><br><br>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="dateDebutPrevue" class="label-masae">Date de début prévue :</label>
+                        <input type="date" id="dateDebutPrevue" name="dateDebutPrevue" 
+                               class="form-control" th:value="${projet.dateDebutPrevue}" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="dateFinPrevue" class="label-masae">Date de fin prévue :</label>
+                        <input type="date" id="dateFinPrevue" name="dateFinPrevue" 
+                               class="form-control" th:value="${projet.dateFinPrevue}" required>
+                    </div>
+                </div>
 
-        <label for="dateFinPrevue">Date de fin prévue :</label>
-        <input type="date" id="dateFinPrevue" name="dateFinPrevue" th:value="${projet.dateFinPrevue}" required><br><br>
+                <div class="mb-3">
+                    <label for="statut" class="label-masae">Statut :</label>
+                    <select id="statut" name="statut" class="form-select" required>
+                        <option value="Planifié" th:selected="${projet.statut == 'Planifié'}">Planifié</option>
+                        <option value="En cours" th:selected="${projet.statut == 'En cours'}">En cours</option>
+                        <option value="Terminé" th:selected="${projet.statut == 'Terminé'}">Terminé</option>
+                        <option value="Suspendu" th:selected="${projet.statut == 'Suspendu'}">Suspendu</option>
+                    </select>
+                </div>
 
-        <label for="statut">Statut :</label>
-        <select id="statut" name="statut" required>
-            <option value="Planifié" th:selected="${projet.statut == 'Planifié'}">Planifié</option>
-            <option value="En cours" th:selected="${projet.statut == 'En cours'}">En cours</option>
-            <option value="Terminé" th:selected="${projet.statut == 'Terminé'}">Terminé</option>
-            <option value="Suspendu" th:selected="${projet.statut == 'Suspendu'}">Suspendu</option>
-        </select><br><br>
+                <div class="mb-3">
+                    <label for="responsable" class="label-masae">Responsable :</label>
+                    <input type="text" id="responsable" name="responsable" 
+                           class="form-control" th:value="${projet.responsable}" required>
+                </div>
 
-        <label for="responsable">Responsable :</label>
-        <input type="text" id="responsable" name="responsable" th:value="${projet.responsable}" required><br><br>
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-masae">💾 Sauvegarder</button>
+                    <a th:href="@{/projets/{id}(id=${projet.id})}" 
+                       class="btn btn-outline-secondary ms-2">Annuler</a>
+                </div>
 
-        <button type="submit">Sauvegarder</button>
-        <a th:href="@{/projets/{id}(id=${projet.id})}">Annuler</a>
+            </form>
+        </div>
 
-    </form>
-
+    </div>
 </body>
-
 </html>

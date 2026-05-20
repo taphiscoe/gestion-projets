@@ -1,56 +1,77 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
 
 <head>
-    <meta charset="UTF-8">
     <title>Détail du Projet</title>
 </head>
 
 <body>
+    <div layout:fragment="contenu">
 
-    <h1 th:text="${projet.nom}"></h1>
+        <h2 class="page-title" th:text="${projet.nom}"></h2>
 
-    <table border="1">
-        <tr>
-            <td><strong>Code</strong></td>
-            <td th:text="${projet.code}"></td>
-        </tr>
-        <tr>
-            <td><strong>Type</strong></td>
-            <td th:text="${projet.type}"></td>
-        </tr>
-        <tr>
-            <td><strong>Description</strong></td>
-            <td th:text="${projet.description}"></td>
-        </tr>
-        <tr>
-            <td><strong>Statut</strong></td>
-            <td th:text="${projet.statut}"></td>
-        </tr>
-        <tr>
-            <td><strong>Date début prévue</strong></td>
-            <td th:text="${projet.dateDebutPrevue}"></td>
-        </tr>
-        <tr>
-            <td><strong>Date fin prévue</strong></td>
-            <td th:text="${projet.dateFinPrevue}"></td>
-        </tr>
-        <tr>
-            <td><strong>Responsable</strong></td>
-            <td th:text="${projet.responsable}"></td>
-        </tr>
-        <tr>
-            <td><strong>Taux d'avancement</strong></td>
-            <td th:text="${projet.tauxAvancement}"></td>
-        </tr>
-        <tr>
-            <td><strong>Date de création</strong></td>
-            <td th:text="${projet.dateCreation}"></td>
-        </tr>
-        <tr>
-            <td><strong>Localités</strong></td>
-            <td>
-                <ul>
+        <div class="card card-masae p-4" style="max-width: 900px;">
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <span class="label-masae">Code :</span>
+                    <span th:text="${projet.code}"></span>
+                </div>
+                <div class="col-md-6">
+                    <span class="label-masae">Type :</span>
+                    <span th:text="${projet.type}"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <span class="label-masae">Description :</span>
+                    <p th:text="${projet.description}"></p>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <span class="label-masae">Date de début prévue :</span>
+                    <span th:text="${projet.dateDebutPrevue}"></span>
+                </div>
+                <div class="col-md-6">
+                    <span class="label-masae">Date de fin prévue :</span>
+                    <span th:text="${projet.dateFinPrevue}"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <span class="label-masae">Statut :</span>
+                    <span th:text="${projet.statut}"
+                          th:classappend="${projet.statut == 'En cours'} ? 'badge bg-success' : 
+                                          (${projet.statut == 'Planifié'} ? 'badge bg-primary' : 
+                                          (${projet.statut == 'Terminé'} ? 'badge bg-secondary' : 'badge bg-warning'))">
+                    </span>
+                </div>
+                <div class="col-md-6">
+                    <span class="label-masae">Taux d'avancement :</span>
+                    <span th:text="${projet.tauxAvancement != null ? projet.tauxAvancement + '%' : '0%'}"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <span class="label-masae">Responsable :</span>
+                    <span th:text="${projet.responsable}"></span>
+                </div>
+                <div class="col-md-6">
+                    <span class="label-masae">Date de création :</span>
+                    <span th:text="${projet.dateCreation}"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <span class="label-masae">Localités :</span>
+                <ul class="mt-2">
                     <li th:each="localite : ${projet.localites}">
                         <span th:text="${localite.region}"></span> /
                         <span th:text="${localite.departement}"></span>
@@ -59,20 +80,21 @@
                         </span>
                     </li>
                 </ul>
-            </td>
-        </tr>
-    </table>
+            </div>
 
-    <br>
-    <a th:href="@{/projets/{id}/modifier(id=${projet.id})}">✏️ Modifier</a>
-    &nbsp;&nbsp;
-    <a th:href="@{/projets/{id}/supprimer(id=${projet.id})}"
-        onclick="return confirm('Voulez-vous vraiment supprimer ce projet ?')">
-        Supprimer
-    </a>
-    &nbsp;&nbsp;
-    <a href="/projets">← Retour à la liste</a>
+            <div class="mt-4">
+                <a th:href="@{/projets/{id}/modifier(id=${projet.id})}" 
+                   class="btn btn-masae">✏️ Modifier</a>
+                <a th:href="@{/projets/{id}/supprimer(id=${projet.id})}"
+                   class="btn btn-outline-danger ms-2"
+                   onclick="return confirm('Voulez-vous vraiment supprimer ce projet ?')">
+                   🗑️ Supprimer
+                </a>
+                <a href="/projets" class="btn btn-outline-secondary ms-2">← Retour</a>
+            </div>
 
+        </div>
+
+    </div>
 </body>
-
 </html>
