@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Détail du Projet</title>
+</head>
+
+<body>
+
+    <h1 th:text="${projet.nom}"></h1>
+
+    <table border="1">
+        <tr>
+            <td><strong>Code</strong></td>
+            <td th:text="${projet.code}"></td>
+        </tr>
+        <tr>
+            <td><strong>Type</strong></td>
+            <td th:text="${projet.type}"></td>
+        </tr>
+        <tr>
+            <td><strong>Description</strong></td>
+            <td th:text="${projet.description}"></td>
+        </tr>
+        <tr>
+            <td><strong>Statut</strong></td>
+            <td th:text="${projet.statut}"></td>
+        </tr>
+        <tr>
+            <td><strong>Date début prévue</strong></td>
+            <td th:text="${projet.dateDebutPrevue}"></td>
+        </tr>
+        <tr>
+            <td><strong>Date fin prévue</strong></td>
+            <td th:text="${projet.dateFinPrevue}"></td>
+        </tr>
+        <tr>
+            <td><strong>Responsable</strong></td>
+            <td th:text="${projet.responsable}"></td>
+        </tr>
+        <tr>
+            <td><strong>Taux d'avancement</strong></td>
+            <td th:text="${projet.tauxAvancement}"></td>
+        </tr>
+        <tr>
+            <td><strong>Date de création</strong></td>
+            <td th:text="${projet.dateCreation}"></td>
+        </tr>
+        <tr>
+            <td><strong>Localités</strong></td>
+            <td>
+                <ul>
+                    <li th:each="localite : ${projet.localites}">
+                        <span th:text="${localite.region}"></span> /
+                        <span th:text="${localite.departement}"></span>
+                        <span th:if="${localite.commune != null && !localite.commune.empty}">
+                            / <span th:text="${localite.commune}"></span>
+                        </span>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+
+    <br>
+    <a th:href="@{/projets/{id}/modifier(id=${projet.id})}">✏️ Modifier</a>
+    &nbsp;&nbsp;
+    <a th:href="@{/projets/{id}/supprimer(id=${projet.id})}"
+        onclick="return confirm('Voulez-vous vraiment supprimer ce projet ?')">
+        Supprimer
+    </a>
+    &nbsp;&nbsp;
+    <a href="/projets">← Retour à la liste</a>
+
+</body>
+
+</html>

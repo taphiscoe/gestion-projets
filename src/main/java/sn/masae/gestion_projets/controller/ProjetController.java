@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired; // Import de l'an
 import org.springframework.stereotype.Controller; // Import de l'annotation Controller pour indiquer que cette classe est un contrôleur Spring MVC 
 import org.springframework.ui.Model; // Import de l'interface Model pour passer des données du contrôleur à la vue  
 import org.springframework.web.bind.annotation.GetMapping; // Import de l'annotation GetMapping pour gérer les requêtes HTTP GET
+import org.springframework.web.bind.annotation.PathVariable; // Import de l'annotation PathVariable pour extraire des variables de l'URL
 import org.springframework.web.bind.annotation.PostMapping;
 
 import sn.masae.gestion_projets.repository.ProjetLocaliteRepository;
@@ -43,7 +44,6 @@ public class ProjetController { // Annotation pour indiquer que cette classe est
 
     @PostMapping("/projets") // Annotation pour gérer les requêtes HTTP POST à l'URL "/projets"
 
-    
     public String sauvegarderProjet(Projet projet,
             @RequestParam List<String> regions,
             @RequestParam List<String> departements,
@@ -62,6 +62,45 @@ public class ProjetController { // Annotation pour indiquer que cette classe est
             projetLocaliteRepository.save(localite);
         }
 
+        return "redirect:/projets";
+    }
+
+    // Afficher le détail d'un projet
+    @GetMapping("/projets/{id}")
+    public String detailProjet(@PathVariable Long id, Model model) {
+        Projet projet = projetRepository.findById(id).orElseThrow();
+        model.addAttribute("projet", projet);
+        return "projets/detail";
+    }
+
+    // Afficher le formulaire de modification
+    @GetMapping("/projets/{id}/modifier")
+    public String modifierProjet(@PathVariable Long id, Model model) {
+        Projet projet = projetRepository.findById(id).orElseThrow();
+        model.addAttribute("projet", projet);
+        return "projets/modifier";
+    }
+
+    // Sauvegarder la modification
+    @PostMapping("/projets/{id}/modifier")
+    public String sauvegarderModification(@PathVariable Long id, Projet projet) {
+        Projet existant = projetRepository.findById(id).orElseThrow();
+        existant.setNom(projet.getNom());
+        existant.setCode(projet.getCode());
+        existant.setDescription(projet.getDescription());
+        existant.setType(projet.getType());
+        existant.setStatut(projet.getStatut());
+        existant.setDateDebutPrevue(projet.getDateDebutPrevue());
+        existant.setDateFinPrevue(projet.getDateFinPrevue());
+        existant.setResponsable(projet.getResponsable());
+        projetRepository.save(existant);
+        return "redirect:/projets/" + id;
+    }
+
+    // Supprimer un projet
+    @GetMapping("/projets/{id}/supprimer")
+    public String supprimerProjet(@PathVariable Long id) {
+        projetRepository.deleteById(id);
         return "redirect:/projets";
     }
 }

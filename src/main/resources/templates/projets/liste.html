@@ -21,6 +21,7 @@
                 <th>Région</th>
                 <th>Statut</th>
                 <th>Taux d'avancement</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -36,7 +37,18 @@
                 </td>
                 <td th:text="${projet.statut}"></td>
                 <td th:text="${projet.tauxAvancement}"></td>
-            </tr>
+            
+            <td>
+                <a th:href="@{/projets/{id}(id=${projet.id})}"> Voir</a>
+                &nbsp;
+                <a th:href="@{/projets/{id}/modifier(id=${projet.id})}"> Modifier</a>
+                &nbsp;
+                <a th:href="@{/projets/{id}/supprimer(id=${projet.id})}"
+                    onclick="return confirm('Voulez-vous vraiment supprimer ce projet ?')">
+                    Supprimer
+                </a>
+            </td>
+           </tr>  
         </tbody>
     </table>
 
