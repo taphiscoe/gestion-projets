@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/main}">
+
+<head>
+    <title>Nouvelle Activité</title>
+</head>
+
+<body>
+    <div layout:fragment="contenu">
+
+        <h2 class="page-title">
+            Nouvelle activité — <span th:text="${projet.nom}"></span>
+        </h2>
+
+        <div class="card card-masae p-4" style="max-width: 800px;">
+            <form th:action="@{/projets/{id}/activites(id=${projet.id})}" method="post">
+
+                <div class="mb-3">
+                    <label class="label-masae">Intitulé :</label>
+                    <input type="text" name="intitule" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="label-masae">Description :</label>
+                    <textarea name="description" class="form-control" rows="3"></textarea>
+                </div>
+
+
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="label-masae">Date de début prévue :</label>
+                        <input type="date" name="dateDebutPrevue" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="label-masae">Date de fin prévue :</label>
+                        <input type="date" name="dateFinPrevue" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="label-masae">Montant prévu (FCFA) :</label>
+                    <input type="number" name="montantPrevu" class="form-control" min="0" step="1000">
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-masae">💾 Sauvegarder</button>
+                    <a th:href="@{/projets/{id}/activites(id=${projet.id})}"
+                        class="btn btn-outline-secondary ms-2">Annuler</a>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

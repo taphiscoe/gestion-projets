@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/main}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/main}">
 
 <head>
     <title>Liste des Projets</title>
@@ -27,7 +26,8 @@
                         <th>Type</th>
                         <th>Région(s)</th>
                         <th>Statut</th>
-                        <th>Taux d'avancement</th>
+                        <th>Activités</th>
+                        <th>Taux global</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -44,18 +44,32 @@
                         </td>
                         <td>
                             <span th:text="${projet.statut}"
-                                  th:classappend="${projet.statut == 'En cours'} ? 'badge bg-success' : 
+                                th:classappend="${projet.statut == 'En cours'} ? 'badge bg-success' : 
                                                   (${projet.statut == 'Planifié'} ? 'badge bg-primary' : 
                                                   (${projet.statut == 'Terminé'} ? 'badge bg-secondary' : 'badge bg-warning'))">
                             </span>
                         </td>
-                        <td th:text="${projet.tauxAvancement != null ? projet.tauxAvancement + '%' : '0%'}"></td>
                         <td>
-                            <a th:href="@{/projets/{id}(id=${projet.id})}" class="btn btn-sm btn-outline-success">👁️ Voir</a>
-                            <a th:href="@{/projets/{id}/modifier(id=${projet.id})}" class="btn btn-sm btn-outline-primary">✏️</a>
+                            <span class="badge bg-secondary"
+                                th:text="${projet.activites != null ? projet.activites.size() : 0} + ' activité(s)'">
+                            </span>
+                        </td>
+                        <td>
+                            <div class="progress" style="height: 20px;">
+                                <div class="progress-bar bg-success"
+                                    th:style="'width: ' + ${projet.tauxAvancement != null ? projet.tauxAvancement : 0} + '%'"
+                                    th:text="${projet.tauxAvancement != null ? projet.tauxAvancement + '%' : '0%'}">
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <a th:href="@{/projets/{id}(id=${projet.id})}" class="btn btn-sm btn-outline-success">👁️
+                                Voir</a>
+                            <a th:href="@{/projets/{id}/modifier(id=${projet.id})}"
+                                class="btn btn-sm btn-outline-primary">✏️</a>
                             <a th:href="@{/projets/{id}/supprimer(id=${projet.id})}"
-                               class="btn btn-sm btn-outline-danger"
-                               onclick="return confirm('Voulez-vous vraiment supprimer ce projet ?')">🗑️</a>
+                                class="btn btn-sm btn-outline-danger"
+                                onclick="return confirm('Voulez-vous vraiment supprimer ce projet ?')">🗑️</a>
                         </td>
                     </tr>
                 </tbody>
@@ -64,4 +78,5 @@
 
     </div>
 </body>
+
 </html>

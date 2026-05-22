@@ -1,4 +1,5 @@
 package sn.masae.gestion_projets.model;
+import sn.masae.gestion_projets.model.Activite;
 
 
 import jakarta.persistence.*;
@@ -29,8 +30,11 @@ public class Projet { // Attributs de l'entité Projet
     private String type; // Agriculture ou Elevage
 
     @OneToMany(mappedBy = "projet", cascade = CascadeType.ALL)
-    
     private List<ProjetLocalite> localites;
+
+    @OneToMany(mappedBy = "projet", cascade = CascadeType.ALL)
+private List<Activite> activites;
+
     private LocalDate dateDebutPrevue;
     private LocalDate dateFinPrevue;
     private LocalDate dateFinReelle;

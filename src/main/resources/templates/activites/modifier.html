@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/main}">
+
+<head>
+    <title>Modifier Activité</title>
+</head>
+
+<body>
+    <div layout:fragment="contenu">
+
+        <h2 class="page-title">Modifier l'activité</h2>
+
+        <div class="card card-masae p-4" style="max-width: 800px;">
+            <form th:action="@{/projets/{pid}/activites/{id}/modifier(pid=${projetId}, id=${activite.id})}"
+                method="post">
+
+                <div class="mb-3">
+                    <label class="label-masae">Intitulé :</label>
+                    <input type="text" name="intitule" class="form-control" th:value="${activite.intitule}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="label-masae">Description :</label>
+                    <textarea name="description" class="form-control" rows="3"
+                        th:text="${activite.description}"></textarea>
+                </div>
+
+
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="label-masae">Date début prévue :</label>
+                        <input type="date" name="dateDebutPrevue" class="form-control"
+                            th:value="${activite.dateDebutPrevue}" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="label-masae">Date fin prévue :</label>
+                        <input type="date" name="dateFinPrevue" class="form-control"
+                            th:value="${activite.dateFinPrevue}" required>
+                    </div>
+                </div>
+
+                <!-- Dates réelles → renseignées après -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="label-masae">Date début réelle :</label>
+                        <input type="date" name="dateDebutReelle" class="form-control"
+                            th:value="${activite.dateDebutReelle}">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="label-masae">Date fin réelle :</label>
+                        <input type="date" name="dateFinReelle" class="form-control"
+                            th:value="${activite.dateFinReelle}">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="label-masae">Montant prévu (FCFA) :</label>
+                        <input type="number" name="montantPrevu" class="form-control"
+                            th:value="${activite.montantPrevu}" min="0" step="1000">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="label-masae">Montant utilisé (FCFA) :</label>
+                        <input type="number" name="montantUtilise" class="form-control"
+                            th:value="${activite.montantUtilise}" min="0" step="1000">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="label-masae">Taux de réalisation (%) :</label>
+                        <input type="number" name="tauxRealisation" class="form-control"
+                            th:value="${activite.tauxRealisation}" min="0" max="100">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="label-masae">Statut :</label>
+                        <select name="statut" class="form-select" required>
+                            <option value="Planifiée" th:selected="${activite.statut == 'Planifiée'}">Planifiée</option>
+                            <option value="En cours" th:selected="${activite.statut == 'En cours'}">En cours</option>
+                            <option value="Terminée" th:selected="${activite.statut == 'Terminée'}">Terminée</option>
+                            <option value="Annulée" th:selected="${activite.statut == 'Annulée'}">Annulée</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="label-masae">Réalisation terrain :</label>
+                    <textarea name="realisation" class="form-control" rows="3"
+                        th:text="${activite.realisation}"></textarea>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-masae">💾 Sauvegarder</button>
+                    <a th:href="@{/projets/{pid}/activites/{id}(pid=${activite.projet.id}, id=${activite.id})}"
+   class="btn btn-outline-secondary ms-2">Annuler</a>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/main}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/main}">
 
 <head>
     <title>Détail du Projet</title>
@@ -47,7 +46,7 @@
                 <div class="col-md-6">
                     <span class="label-masae">Statut :</span>
                     <span th:text="${projet.statut}"
-                          th:classappend="${projet.statut == 'En cours'} ? 'badge bg-success' : 
+                        th:classappend="${projet.statut == 'En cours'} ? 'badge bg-success' : 
                                           (${projet.statut == 'Planifié'} ? 'badge bg-primary' : 
                                           (${projet.statut == 'Terminé'} ? 'badge bg-secondary' : 'badge bg-warning'))">
                     </span>
@@ -81,14 +80,20 @@
                     </li>
                 </ul>
             </div>
+            <!-- Activités du projet -->
+            <div class="mt-4 mb-3">
+                <hr>
+                <h5 class="label-masae">📋 Activités</h5>
+                <a th:href="@{/projets/{id}/activites(id=${projet.id})}" class="btn btn-masae">
+                    Voir les activités
+                </a>
+            </div>
 
             <div class="mt-4">
-                <a th:href="@{/projets/{id}/modifier(id=${projet.id})}" 
-                   class="btn btn-masae">✏️ Modifier</a>
-                <a th:href="@{/projets/{id}/supprimer(id=${projet.id})}"
-                   class="btn btn-outline-danger ms-2"
-                   onclick="return confirm('Voulez-vous vraiment supprimer ce projet ?')">
-                   🗑️ Supprimer
+                <a th:href="@{/projets/{id}/modifier(id=${projet.id})}" class="btn btn-masae">✏️ Modifier</a>
+                <a th:href="@{/projets/{id}/supprimer(id=${projet.id})}" class="btn btn-outline-danger ms-2"
+                    onclick="return confirm('Voulez-vous vraiment supprimer ce projet ?')">
+                    🗑️ Supprimer
                 </a>
                 <a href="/projets" class="btn btn-outline-secondary ms-2">← Retour</a>
             </div>
@@ -97,4 +102,5 @@
 
     </div>
 </body>
+
 </html>
