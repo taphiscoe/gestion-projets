@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/main}">
+
+<head>
+    <title>Détail Sous-activité</title>
+</head>
+
+<body>
+    <div layout:fragment="contenu">
+
+        <h2 class="page-title" th:text="${sousActivite.intitule}"></h2>
+
+        <div class="card card-masae p-4" style="max-width: 900px;">
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <span class="label-masae">Activité :</span>
+                    <span th:text="${sousActivite.activite.intitule}"></span>
+                </div>
+                <div class="col-md-6">
+                    <span class="label-masae">Projet :</span>
+                    <span th:text="${sousActivite.activite.projet.nom}"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <span class="label-masae">Description :</span>
+                    <p th:text="${sousActivite.description}"></p>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <span class="label-masae">Date début prévue :</span>
+                    <span th:text="${sousActivite.dateDebutPrevue}"></span>
+                </div>
+                <div class="col-md-6">
+                    <span class="label-masae">Date fin prévue :</span>
+                    <span th:text="${sousActivite.dateFinPrevue}"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <span class="label-masae">Date début réelle :</span>
+                    <span
+                        th:text="${sousActivite.dateDebutReelle != null ? sousActivite.dateDebutReelle : 'Non renseignée'}"></span>
+                </div>
+                <div class="col-md-6">
+                    <span class="label-masae">Date fin réelle :</span>
+                    <span
+                        th:text="${sousActivite.dateFinReelle != null ? sousActivite.dateFinReelle : 'Non renseignée'}"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <span class="label-masae">Montant prévu :</span>
+                    <span
+                        th:text="${sousActivite.montantPrevu != null ? #numbers.formatDecimal(sousActivite.montantPrevu, 0, 'COMMA', 0, 'POINT') + ' FCFA' : '-'}"></span>
+                </div>
+                <div class="col-md-4">
+                    <span class="label-masae">Montant utilisé :</span>
+                    <span
+                        th:text="${sousActivite.montantUtilise != null ? #numbers.formatDecimal(sousActivite.montantUtilise, 0, 'COMMA', 0, 'POINT') + ' FCFA' : '-'}"></span>
+                </div>
+                <div class="col-md-4">
+                    <span class="label-masae">Taux de réalisation :</span>
+                    <span
+                        th:text="${sousActivite.tauxRealisation != null ? sousActivite.tauxRealisation + '%' : '0%'}"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <span class="label-masae">Statut :</span>
+                    <span th:text="${sousActivite.statut}"
+                        th:classappend="${sousActivite.statut == 'En cours'} ? 'badge bg-success' :
+                                          (${sousActivite.statut == 'Planifiée'} ? 'badge bg-primary' :
+                                          (${sousActivite.statut == 'Terminée'} ? 'badge bg-secondary' : 'badge bg-danger'))">
+                    </span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <span class="label-masae">Réalisation terrain :</span>
+                <p th:text="${sousActivite.realisation != null ? sousActivite.realisation : 'Non renseignée'}"></p>
+            </div>
+
+           
+
+            <div class="mt-4">
+                <a th:href="@{/projets/{pid}/activites/{aid}/sousactivites/{id}/modifier(pid=${projetId}, aid=${activiteId}, id=${sousActivite.id})}"
+                    class="btn btn-masae">✏️ Modifier</a>
+                <a th:href="@{/projets/{pid}/activites/{aid}/sousactivites/{id}/supprimer(pid=${projetId}, aid=${activiteId}, id=${sousActivite.id})}"
+                    class="btn btn-outline-danger ms-2" onclick="return confirm('Supprimer cette sous-activité ?')">🗑️
+                    Supprimer</a>
+                <a th:href="@{/projets/{pid}/activites/{aid}/sousactivites(pid=${projetId}, aid=${activiteId})}"
+                    class="btn btn-outline-secondary ms-2">← Retour</a>
+            </div>
+
+        </div>
+
+    </div>
+</body>
+
+</html>

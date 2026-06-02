@@ -3,12 +3,11 @@ package sn.masae.gestion_projets.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @Entity
-@Table(name = "activites")
-public class Activite {
+@Table(name = "sous_activites")
+public class SousActivite {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,34 +19,26 @@ public class Activite {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    // Dates prévues → saisies à la création
     private LocalDate dateDebutPrevue;
     private LocalDate dateFinPrevue;
 
-    // Dates réelles → saisies pendant/après
     private LocalDate dateDebutReelle;
     private LocalDate dateFinReelle;
 
-    // Montants
     private Double montantPrevu;
     private Double montantUtilise;
 
-    // Suivi
     private Double tauxRealisation;
-    private String statut; // Planifiée, En cours, Terminée, Annulée
+    private String statut;
 
     @Column(columnDefinition = "TEXT")
-    private String realisation; // description terrain
+    private String realisation;
 
-    // Dates système
     private LocalDate dateCreation;
     private String creePar;
 
-    // Lien avec le Projet
+    // Lien avec l'Activité
     @ManyToOne
-    @JoinColumn(name = "projet_id", nullable = false)
-    private Projet projet;
-
-    @OneToMany(mappedBy = "activite", cascade = CascadeType.ALL)
-    private List<SousActivite> sousActivites;
+    @JoinColumn(name = "activite_id", nullable = false)
+    private Activite activite;
 }

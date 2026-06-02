@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/main}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/main}">
 
 <head>
     <title>Détail Activité</title>
@@ -22,7 +21,7 @@
                 <div class="col-md-6">
                     <span class="label-masae">Statut :</span>
                     <span th:text="${activite.statut}"
-                          th:classappend="${activite.statut == 'En cours'} ? 'badge bg-success' : 
+                        th:classappend="${activite.statut == 'En cours'} ? 'badge bg-success' : 
                                           (${activite.statut == 'Planifiée'} ? 'badge bg-primary' : 
                                           (${activite.statut == 'Terminée'} ? 'badge bg-secondary' : 'badge bg-danger'))">
                     </span>
@@ -36,7 +35,7 @@
                 </div>
             </div>
 
-            
+
 
             <div class="row mb-3">
                 <div class="col-md-6">
@@ -52,22 +51,26 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     <span class="label-masae">Date début réelle :</span>
-                    <span th:text="${activite.dateDebutReelle != null ? activite.dateDebutReelle : 'Non renseignée'}"></span>
+                    <span
+                        th:text="${activite.dateDebutReelle != null ? activite.dateDebutReelle : 'Non renseignée'}"></span>
                 </div>
                 <div class="col-md-6">
                     <span class="label-masae">Date fin réelle :</span>
-                    <span th:text="${activite.dateFinReelle != null ? activite.dateFinReelle : 'Non renseignée'}"></span>
+                    <span
+                        th:text="${activite.dateFinReelle != null ? activite.dateFinReelle : 'Non renseignée'}"></span>
                 </div>
             </div>
 
             <div class="row mb-3">
                 <div class="col-md-4">
                     <span class="label-masae">Montant prévu :</span>
-                    <span th:text="${activite.montantPrevu != null ? #numbers.formatDecimal(activite.montantPrevu, 0, 'COMMA', 0, 'POINT') + ' FCFA' : '-'}"></span>
+                    <span
+                        th:text="${activite.montantPrevu != null ? #numbers.formatDecimal(activite.montantPrevu, 0, 'COMMA', 0, 'POINT') + ' FCFA' : '-'}"></span>
                 </div>
                 <div class="col-md-4">
                     <span class="label-masae">Montant utilisé :</span>
-                    <span th:text="${activite.montantUtilise != null ? #numbers.formatDecimal(activite.montantUtilise, 0, 'COMMA', 0, 'POINT') + ' FCFA' : '-'}"></span>
+                    <span
+                        th:text="${activite.montantUtilise != null ? #numbers.formatDecimal(activite.montantUtilise, 0, 'COMMA', 0, 'POINT') + ' FCFA' : '-'}"></span>
                 </div>
                 <div class="col-md-4">
                     <span class="label-masae">Taux de réalisation :</span>
@@ -80,18 +83,29 @@
                 <p th:text="${activite.realisation != null ? activite.realisation : 'Non renseignée'}"></p>
             </div>
 
+            <!-- Sous-activités -->
+            <div class="mt-4 mb-3">
+                <hr>
+                <h5 class="label-masae">📋 Sous-activités</h5>
+                <a th:href="@{/projets/{pid}/activites/{aid}/sousactivites(pid=${projetId}, aid=${activite.id})}"
+                    class="btn btn-masae">
+                    Voir les sous-activités
+                </a>
+            </div>
+
             <div class="mt-4">
                 <a th:href="@{/projets/{pid}/activites/{id}/modifier(pid=${projetId}, id=${activite.id})}"
-                   class="btn btn-masae">✏️ Modifier</a>
+                    class="btn btn-masae">✏️ Modifier</a>
                 <a th:href="@{/projets/{pid}/activites/{id}/supprimer(pid=${projetId}, id=${activite.id})}"
-                   class="btn btn-outline-danger ms-2"
-                   onclick="return confirm('Supprimer cette activité ?')">🗑️ Supprimer</a>
-                <a th:href="@{/projets/{id}/activites(id=${projetId})}"
-                   class="btn btn-outline-secondary ms-2">← Retour</a>
+                    class="btn btn-outline-danger ms-2" onclick="return confirm('Supprimer cette activité ?')">🗑️
+                    Supprimer</a>
+                <a th:href="@{/projets/{id}/activites(id=${projetId})}" class="btn btn-outline-secondary ms-2">←
+                    Retour</a>
             </div>
 
         </div>
 
     </div>
 </body>
+
 </html>
