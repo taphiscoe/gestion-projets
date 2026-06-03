@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
+
+<head>
+    <title>Gestion des Utilisateurs</title>
+</head>
+
+<body>
+    <div layout:fragment="contenu">
+
+        <h2 class="page-title">👥 Gestion des Utilisateurs</h2>
+
+        <!-- Message de succès -->
+        <div th:if="${succes}" class="alert alert-success" th:text="${succes}"></div>
+
+        <div class="mb-3">
+            <a href="/admin/utilisateurs/nouveau" class="btn btn-masae">
+                + Ajouter un utilisateur
+            </a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Nom Prénom</th>
+                        <th>Email</th>
+                        <th>Rôle</th>
+                        <th>Région</th>
+                        <th>Statut</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="utilisateur : ${utilisateurs}">
+                        <td th:text="${utilisateur.prenom + ' ' + utilisateur.nom}"></td>
+                        <td th:text="${utilisateur.email}"></td>
+                        <td>
+                            <span th:text="${utilisateur.role}"
+                                  th:classappend="${utilisateur.role == 'ADMIN'} ? 'badge bg-danger' :
+                                                  (${utilisateur.role == 'AGENT'} ? 'badge bg-primary' :
+                                                  (${utilisateur.role == 'FINANCIER'} ? 'badge bg-warning' :
+                                                  (${utilisateur.role == 'AUTORITE'} ? 'badge bg-success' : 'badge bg-secondary')))">
+                            </span>
+                        </td>
+                        <td th:text="${utilisateur.region != null ? utilisateur.region : '-'}"></td>
+                        <td>
+                            <span th:text="${utilisateur.statut}"
+                                  th:classappend="${utilisateur.statut == 'Actif'} ? 'badge bg-success' : 'badge bg-danger'">
+                            </span>
+                        </td>
+                        <td>
+                            <a th:href="@{/admin/utilisateurs/{id}/statut(id=${utilisateur.id})}"
+                               class="btn btn-sm btn-outline-warning"
+                               th:text="${utilisateur.statut == 'Actif'} ? '🔒 Bloquer' : '🔓 Débloquer'">
+                            </a>
+                            <a th:href="@{/admin/utilisateurs/{id}/supprimer(id=${utilisateur.id})}"
+                               class="btn btn-sm btn-outline-danger ms-1"
+                               onclick="return confirm('Supprimer cet utilisateur ?')">🗑️</a>
+                        </td>
+                    </tr>
+                    <tr th:if="${utilisateurs.empty}">
+                        <td colspan="6" class="text-center text-muted">
+                            Aucun utilisateur enregistré
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</body>
+</html>
