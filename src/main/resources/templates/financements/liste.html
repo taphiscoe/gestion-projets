@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
+
+<head>
+    <title>Financements du Projet</title>
+</head>
+
+<body>
+    <div layout:fragment="contenu">
+
+        <h2 class="page-title">
+            Financements du projet : <span th:text="${projet.nom}"></span>
+        </h2>
+
+        <!-- Message de succès -->
+        <div th:if="${succes}" class="alert alert-success" th:text="${succes}"></div>
+
+        <!-- Budget total -->
+        <div class="card card-masae p-3 mb-4" style="max-width: 400px;">
+            <h5 class="label-masae">💰 Budget total du projet</h5>
+            <h3 class="text-success" 
+                th:text="${#numbers.formatDecimal(budgetTotal, 0, 'COMMA', 0, 'POINT') + ' FCFA'}">
+            </h3>
+        </div>
+
+        <div class="mb-3">
+            <a th:href="@{/projets/{id}/financements/nouveau(id=${projet.id})}"
+               class="btn btn-masae">+ Ajouter un financement</a>
+            <a th:href="@{/projets/{id}(id=${projet.id})}"
+               class="btn btn-outline-secondary ms-2">← Retour au projet</a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Bailleur</th>
+                        <th>Type</th>
+                        <th>Montant</th>
+                        <th>Pourcentage</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="financement : ${financements}">
+                        <td th:text="${financement.bailleur}"></td>
+                        <td th:text="${financement.type}"></td>
+                        <td th:text="${#numbers.formatDecimal(financement.montant, 0, 'COMMA', 0, 'POINT') + ' FCFA'}"></td>
+                        <td>
+                            <div class="progress" style="height: 20px;">
+                                <div class="progress-bar bg-success"
+                                     th:style="'width: ' + ${financement.pourcentage != null ? financement.pourcentage : 0} + '%'"
+                                     th:text="${financement.pourcentage != null ? financement.pourcentage + '%' : '0%'}">
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <a th:href="@{/projets/{pid}/financements/{id}/supprimer(pid=${projet.id}, id=${financement.id})}"
+                               class="btn btn-sm btn-outline-danger"
+                               onclick="return confirm('Supprimer ce financement ?')">🗑️</a>
+                        </td>
+                    </tr>
+                    <tr th:if="${financements.empty}">
+                        <td colspan="5" class="text-center text-muted">
+                            Aucun financement pour ce projet
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</body>
+</html>

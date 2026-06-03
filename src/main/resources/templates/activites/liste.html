@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/main}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/main}">
 
 <head>
     <title>Activités du Projet</title>
@@ -15,10 +14,9 @@
         </h2>
 
         <div class="mb-3">
-            <a th:href="@{/projets/{id}/activites/nouveau(id=${projet.id})}" 
-               class="btn btn-masae">+ Ajouter une activité</a>
-            <a th:href="@{/projets/{id}(id=${projet.id})}" 
-               class="btn btn-outline-secondary ms-2">← Retour au projet</a>
+            <a th:href="@{/projets/{id}/activites/nouveau(id=${projet.id})}" class="btn btn-masae">+ Ajouter une
+                activité</a>
+            <a th:href="@{/projets/{id}(id=${projet.id})}" class="btn btn-outline-secondary ms-2">← Retour au projet</a>
         </div>
 
         <div class="table-responsive">
@@ -26,7 +24,7 @@
                 <thead>
                     <tr>
                         <th>Intitulé</th>
-                       
+
                         <th>Date début prévue</th>
                         <th>Date fin prévue</th>
                         <th>Montant prévu</th>
@@ -39,27 +37,36 @@
                 <tbody>
                     <tr th:each="activite : ${activites}">
                         <td th:text="${activite.intitule}"></td>
-                       
+
                         <td th:text="${activite.dateDebutPrevue}"></td>
                         <td th:text="${activite.dateFinPrevue}"></td>
-                        <td th:text="${activite.montantPrevu != null ? #numbers.formatDecimal(activite.montantPrevu, 0, 'COMMA', 0, 'POINT') + ' FCFA' : '-'}"></td>
-                        <td th:text="${activite.montantUtilise != null ? #numbers.formatDecimal(activite.montantUtilise, 0, 'COMMA', 0, 'POINT') + ' FCFA' : '-'}"></td>
+                        <td
+                            th:text="${activite.montantPrevu != null ? #numbers.formatDecimal(activite.montantPrevu, 0, 'COMMA', 0, 'POINT') + ' FCFA' : '-'}">
+                        </td>
+                        <td
+                            th:text="${activite.montantUtilise != null ? #numbers.formatDecimal(activite.montantUtilise, 0, 'COMMA', 0, 'POINT') + ' FCFA' : '-'}">
+                        </td>
                         <td th:text="${activite.tauxRealisation != null ? activite.tauxRealisation + '%' : '0%'}"></td>
                         <td>
+                            <span class="badge bg-secondary"
+                                th:text="${activite.sousActivites != null ? activite.sousActivites.size() : 0} + ' sous-activité(s)'">
+                            </span>
+                        </td>
+                        <td>
                             <span th:text="${activite.statut}"
-                                  th:classappend="${activite.statut == 'En cours'} ? 'badge bg-success' : 
+                                th:classappend="${activite.statut == 'En cours'} ? 'badge bg-success' : 
                                                   (${activite.statut == 'Planifiée'} ? 'badge bg-primary' : 
                                                   (${activite.statut == 'Terminée'} ? 'badge bg-secondary' : 'badge bg-danger'))">
                             </span>
                         </td>
                         <td>
-                            <a th:href="@{/projets/{pid}/activites/{id}(pid=${projet.id}, id=${activite.id})}" 
-                               class="btn btn-sm btn-outline-success">👁️ Voir</a>
-                            <a th:href="@{/projets/{pid}/activites/{id}/modifier(pid=${projet.id}, id=${activite.id})}" 
-                               class="btn btn-sm btn-outline-primary">✏️</a>
+                            <a th:href="@{/projets/{pid}/activites/{id}(pid=${projet.id}, id=${activite.id})}"
+                                class="btn btn-sm btn-outline-success">👁️ Voir</a>
+                            <a th:href="@{/projets/{pid}/activites/{id}/modifier(pid=${projet.id}, id=${activite.id})}"
+                                class="btn btn-sm btn-outline-primary">✏️</a>
                             <a th:href="@{/projets/{pid}/activites/{id}/supprimer(pid=${projet.id}, id=${activite.id})}"
-                               class="btn btn-sm btn-outline-danger"
-                               onclick="return confirm('Supprimer cette activité ?')">🗑️</a>
+                                class="btn btn-sm btn-outline-danger"
+                                onclick="return confirm('Supprimer cette activité ?')">🗑️</a>
                         </td>
                     </tr>
                     <tr th:if="${activites.empty}">
@@ -73,4 +80,5 @@
 
     </div>
 </body>
+
 </html>

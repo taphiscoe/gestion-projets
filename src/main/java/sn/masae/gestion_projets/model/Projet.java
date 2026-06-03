@@ -1,6 +1,7 @@
 package sn.masae.gestion_projets.model;
-import sn.masae.gestion_projets.model.Activite;
 
+import sn.masae.gestion_projets.model.Activite;
+import sn.masae.gestion_projets.model.Financement;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -33,7 +34,10 @@ public class Projet { // Attributs de l'entité Projet
     private List<ProjetLocalite> localites;
 
     @OneToMany(mappedBy = "projet", cascade = CascadeType.ALL)
-private List<Activite> activites;
+    private List<Activite> activites;
+
+    @OneToMany(mappedBy = "projet", cascade = CascadeType.ALL)
+    private List<Financement> financements;
 
     private LocalDate dateDebutPrevue;
     private LocalDate dateFinPrevue;

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
+
+<head>
+    <title>Nouveau Financement</title>
+</head>
+
+<body>
+    <div layout:fragment="contenu">
+
+        <h2 class="page-title">
+            Nouveau financement — <span th:text="${projet.nom}"></span>
+        </h2>
+
+        <div class="card card-masae p-4" style="max-width: 600px;">
+            <form th:action="@{/projets/{id}/financements(id=${projet.id})}" method="post">
+
+                <div class="mb-3">
+                    <label class="label-masae">Bailleur :</label>
+                    <select name="bailleur" class="form-select" required>
+                        <option value="">--Sélectionnez un bailleur--</option>
+                        <option value="État du Sénégal">État du Sénégal</option>
+                        <option value="Banque Mondiale">Banque Mondiale</option>
+                        <option value="Union Européenne">Union Européenne</option>
+                        <option value="USAID">USAID</option>
+                        <option value="FAO">FAO</option>
+                        <option value="FIDA">FIDA</option>
+                        <option value="BAD">BAD</option>
+                        <option value="BOAD">BOAD</option>
+                        <option value="Autre">Autre</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="label-masae">Type de financement :</label>
+                    <select name="type" class="form-select" required>
+                        <option value="">--Sélectionnez un type--</option>
+                        <option value="Don">Don</option>
+                        <option value="Prêt">Prêt</option>
+                        <option value="Contrepartie nationale">Contrepartie nationale</option>
+                        <option value="Subvention">Subvention</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="label-masae">Montant (FCFA) :</label>
+                    <input type="number" name="montant" class="form-control"
+                           min="0" step="1000" required>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-masae">💾 Sauvegarder</button>
+                    <a th:href="@{/projets/{id}/financements(id=${projet.id})}"
+                       class="btn btn-outline-secondary ms-2">Annuler</a>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</body>
+</html>
