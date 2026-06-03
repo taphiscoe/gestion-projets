@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDate;
 import java.util.List;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -44,6 +45,7 @@ public class Activite {
     private String creePar;
 
     // Lien avec le Projet
+    @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "projet_id", nullable = false)
     private Projet projet;

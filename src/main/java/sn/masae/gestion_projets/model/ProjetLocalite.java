@@ -2,6 +2,7 @@ package sn.masae.gestion_projets.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -12,6 +13,8 @@ public class ProjetLocalite {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
+    @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "projet_id", nullable = false)
     private Projet projet;

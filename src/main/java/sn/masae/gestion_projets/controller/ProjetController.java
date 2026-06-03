@@ -3,9 +3,13 @@ package sn.masae.gestion_projets.controller;
 import sn.masae.gestion_projets.model.Projet; // Import de la classe Projet pour représenter les projets dans le code
 import sn.masae.gestion_projets.model.ProjetLocalite;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired; // Import de l'annotation Autowired pour l'injection de dépendances
 import org.springframework.stereotype.Controller; // Import de l'annotation Controller pour indiquer que cette classe est un contrôleur Spring MVC 
@@ -102,5 +106,38 @@ public class ProjetController { // Annotation pour indiquer que cette classe est
     public String supprimerProjet(@PathVariable Long id) {
         projetRepository.deleteById(id);
         return "redirect:/projets";
+    }
+
+    @GetMapping("/carte")
+    public String carte(Model model) {
+        model.addAttribute("projets", projetRepository.findAll());
+        return "carte";
+    }
+
+    @GetMapping("/api/projets/carte")
+    @ResponseBody
+    public List<Map<String, Object>> getProjetsPourCarte() {
+        List<Projet> projets = projetRepository.findAll();
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        for (Projet projet : projets) {
+            Map<String, Object> p = new HashMap<>();
+            p.put("id", projet.getId());
+            p.put("nom", projet.getNom());
+            p.put("code", projet.getCode());
+            p.put("statut", projet.getStatut());
+            p.put("type", projet.getType());
+            p.put("taux", projet.getTauxAvancement() != null ? projet.getTauxAvancement() : 0);
+
+            List<String> regions = new ArrayList<>();
+            if (projet.getLocalites() != null) {
+                for (ProjetLocalite loc : projet.getLocalites()) {
+                    regions.add(loc.getRegion());
+                }
+            }
+            p.put("regions", regions);
+            result.add(p);
+        }
+        return result;
     }
 }

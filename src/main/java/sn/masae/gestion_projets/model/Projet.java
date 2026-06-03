@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDate;
 import java.util.List;
+import lombok.ToString;
 
 @Data // Lombok génère automatiquement les getters, setters, toString, equals et
       // hashCode
@@ -30,12 +31,15 @@ public class Projet { // Attributs de l'entité Projet
     @Column(nullable = false)
     private String type; // Agriculture ou Elevage
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "projet", cascade = CascadeType.ALL)
     private List<ProjetLocalite> localites;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "projet", cascade = CascadeType.ALL)
     private List<Activite> activites;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "projet", cascade = CascadeType.ALL)
     private List<Financement> financements;
 

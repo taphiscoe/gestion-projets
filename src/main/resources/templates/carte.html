@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
+
+<head>
+    <title>Carte des Projets</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css"/>
+    <style>
+        #carte-senegal {
+            height: 600px;
+            width: 100%;
+            border-radius: 8px;
+            border: 2px solid #1a5c38;
+        }
+    </style>
+</head>
+
+<body>
+    <div layout:fragment="contenu">
+
+        <h2 class="page-title">🗺️ Carte des Projets au Sénégal</h2>
+
+        <div class="legende mb-3 p-2" style="background:white; border-left:4px solid #1a5c38; border-radius:4px;">
+            <strong>Légende :</strong>&nbsp;&nbsp;
+            <span style="background:#28a745;width:12px;height:12px;border-radius:50%;display:inline-block"></span> En cours &nbsp;
+            <span style="background:#007bff;width:12px;height:12px;border-radius:50%;display:inline-block"></span> Planifié &nbsp;
+            <span style="background:#6c757d;width:12px;height:12px;border-radius:50%;display:inline-block"></span> Terminé &nbsp;
+            <span style="background:#ffc107;width:12px;height:12px;border-radius:50%;display:inline-block"></span> Suspendu
+        </div>
+
+        <div id="carte-senegal"></div>
+
+        <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+        <script th:inline="javascript">
+
+         window.onload = function() {
+
+    var carte = L.map('carte-senegal').setView([14.4974, -14.4524], 7);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(carte);
+
+    var coordonnees = {
+        "Dakar":        [14.7167, -17.4677],
+        "Thiès":        [14.7833, -16.9167],
+        "Diourbel":     [14.6500, -16.2333],
+        "Saint-Louis":  [16.0333, -16.5000],
+        "Louga":        [15.6167, -16.2333],
+        "Fatick":       [14.3333, -16.4000],
+        "Kaolack":      [14.1500, -16.0667],
+        "Kaffrine":     [14.1000, -15.5500],
+        "Tambacounda":  [13.7667, -13.6667],
+        "Kédougou":     [12.5500, -12.1833],
+        "Kolda":        [12.8833, -14.9500],
+        "Ziguinchor":   [12.5667, -16.2667],
+        "Sédhiou":      [12.7000, -15.5500],
+        "Matam":        [15.6500, -13.2500]
+    };
+
+    var couleurs = {
+        "En cours":  "#28a745",
+        "Planifié":  "#007bff",
+        "Terminé":   "#6c757d",
+        "Suspendu":  "#ffc107"
+    };
+
+    fetch('/api/projets/carte')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            data.forEach(function(projet) {
+                projet.regions.forEach(function(region) {
+                    var coords = coordonnees[region];
+                    if (coords) {
+                        var couleur = couleurs[projet.statut] || "#007bff";
+                        var marqueur = L.circleMarker(coords, {
+                            radius: 12,
+                            fillColor: couleur,
+                            color: 'white',
+                            weight: 2,
+                            opacity: 1,
+                            fillOpacity: 0.9
+                        }).addTo(carte);
+
+                        marqueur.bindPopup(
+                            '<div style="min-width:200px;">' +
+                            '<b style="color:#1a5c38;">' + projet.nom + '</b><hr>' +
+                            '<b>Code :</b> ' + projet.code + '<br>' +
+                            '<b>Type :</b> ' + projet.type + '<br>' +
+                            '<b>Région :</b> ' + region + '<br>' +
+                            '<b>Statut :</b> ' + projet.statut + '<br>' +
+                            '<b>Avancement :</b> ' + projet.taux + '%<br><hr>' +
+                            '<a href="/projets/' + projet.id + '" style="color:#1a5c38;font-weight:bold;">👁️ Voir le projet</a>' +
+                            '</div>'
+                        );
+                    }
+                });
+            });
+        });
+};
+        </script>
+
+    </div>
+</body>
+</html>
